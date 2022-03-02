@@ -34,10 +34,9 @@ class ProductCard extends StatelessWidget {
         child: Column(
           children: [
             ListTile(
-              leading: const Icon(Icons.arrow_drop_down_circle),
               title: Text(product.name),
               subtitle: Text(
-                "Rp ${product.price.toString()}",
+                "\$ ${product.price.toString()}",
                 style: TextStyle(color: Colors.black.withOpacity(0.6)),
               ),
             ),
