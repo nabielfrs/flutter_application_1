@@ -9,22 +9,22 @@ import '../widget/card.dart';
 class Home extends StatefulWidget {
   static const String route = "/";
 
-  const Home({Key? key}) : super(key: key);
+  const Home({Key key}) : super(key: key);
 
   @override
   _Home createState() => _Home();
 }
 
 class _Home extends State<Home> {
-  late Future<List<Product>> _products;
-  late List<Product> _productsList;
+  Future<List<Product>> _products;
+  List<Product> _productsList;
   final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
     _products = ProductApi().getProducts();
-    _productsList = <Product>[];
+    _productsList = List<Product>();
   }
 
   @override
@@ -54,13 +54,13 @@ class _Home extends State<Home> {
                 itemBuilder: (context, index) => ProductCard(
                   product: _productsList[index],
                   onTapProduct: (product) {
-                    // Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //       builder: (context) => AddEditProduct(
-                    //         product: product,
-                    //       ),
-                    //     ));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Detail(
+                            product: product,
+                          ),
+                        ));
                   },
                   onEditProduct: (product) async {
                     final Product product = await Navigator.push(

@@ -5,9 +5,9 @@ import 'package:flutter_application_1/data/product.dart';
 class Detail extends StatelessWidget {
   static const String route = "/detail";
 
-  final Product? product;
+  final Product product;
   const Detail({
-    Key? key,
+    Key key,
     this.product,
   }) : super(key: key);
 
@@ -21,17 +21,17 @@ class Detail extends StatelessWidget {
         child: Center(
           child: Column(
             children: [
-              CachedNetworkImage(imageUrl: product!.imageUrl),
+              CachedNetworkImage(imageUrl: product.imageUrl),
               Text(
-                product!.name,
+                product.name,
                 style: TextStyle(fontSize: 24),
               ),
               Text(
-                product!.description,
+                product.description,
                 style: TextStyle(fontSize: 12),
               ),
               Text(
-                " ${product!.price.toString()}",
+                " ${product.price.toString()}",
                 style: TextStyle(fontSize: 18),
               ),
             ],

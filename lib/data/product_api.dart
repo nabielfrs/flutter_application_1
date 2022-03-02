@@ -8,7 +8,7 @@ class ProductApi {
   Future<List<Product>> getProducts() async {
     try {
       final Response response = await _dio.get("$_baseUrl/products");
-      final results = Map<String, dynamic>.from(response.data);
+      final results = response.data;
       return (results as List)
           .map((e) => Product.fromMap(e))
           .toList(growable: false);
@@ -21,7 +21,7 @@ class ProductApi {
   Future<Product> getProductById(int id) async {
     try {
       final Response response = await _dio.get("$_baseUrl/products/$id");
-      final results = Map<String, dynamic>.from(response.data);
+      final results = response.data;
       return Product.fromMap(results);
     } catch (e) {
       print(e);
@@ -38,7 +38,7 @@ class ProductApi {
           contentType: Headers.jsonContentType,
         ),
       );
-      final results = Map<String, dynamic>.from(response.data);
+      final results = response.data;
       return Product.fromMap(results);
     } catch (e) {
       print(e);
@@ -55,7 +55,7 @@ class ProductApi {
           contentType: Headers.jsonContentType,
         ),
       );
-      final results = Map<String, dynamic>.from(response.data);
+      final results = response.data;
       return Product.fromMap(results);
     } catch (e) {
       print(e);
@@ -66,7 +66,7 @@ class ProductApi {
   Future<bool> deleteProductById(id) async {
     try {
       final Response response = await _dio.delete("$_baseUrl/products/$id");
-      final resutls = Map<String, dynamic>.from(response.data);
+      final resutls = response.data;
       return response.statusCode == 200;
     } catch (e) {
       print(e);

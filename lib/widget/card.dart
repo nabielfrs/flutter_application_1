@@ -11,11 +11,11 @@ typedef OnTapProduct = Function(Product product);
 
 class ProductCard extends StatelessWidget {
   const ProductCard({
-    Key? key,
-    required this.product,
-    required this.onEditProduct,
-    required this.onDeletedProduct,
-    required this.onTapProduct,
+    Key key,
+    this.product,
+    this.onEditProduct,
+    this.onDeletedProduct,
+    this.onTapProduct,
   }) : super(key: key);
 
   final Product product;

@@ -6,11 +6,11 @@ class AddEditProduct extends StatefulWidget {
   static const String routeAdd = "/add";
   static const String routeEdit = "/edit";
   final bool Add;
-  Product? product;
+  Product product;
 
   AddEditProduct({
-    Key? key,
-    required this.Add,
+    Key key,
+    this.Add,
     this.product,
   }) : super(key: key);
 
@@ -21,9 +21,9 @@ class AddEditProduct extends StatefulWidget {
 class _AddEditProductState extends State<AddEditProduct> {
   final formKey = GlobalKey<FormState>();
 
-  late String bookName;
-  late String bookDescription;
-  late int bookPrice;
+  String bookName;
+  String bookDescription;
+  double bookPrice;
 
   @override
   Widget build(BuildContext context) {
@@ -40,8 +40,8 @@ class _AddEditProductState extends State<AddEditProduct> {
           IconButton(
             icon: Icon(Icons.save),
             onPressed: () {
-              if (formKey.currentState!.validate()) {
-                formKey.currentState!.save();
+              if (formKey.currentState.validate()) {
+                formKey.currentState.save();
 
                 if (widget.Add) {
                   ProductApi().postProducts({
@@ -50,11 +50,11 @@ class _AddEditProductState extends State<AddEditProduct> {
                     "price": bookPrice,
                     "image": "Link/$bookName",
                   }).then((value) {
-                    formKey.currentState!.reset();
+                    formKey.currentState.reset();
                     Navigator.pop(context, value);
                   });
                 } else {
-                  ProductApi().putProductById(widget.product!.id, {
+                  ProductApi().putProductById(widget.product.id, {
                     "name": bookName,
                     "price": bookPrice,
                   }).then((value) {
@@ -75,19 +75,19 @@ class _AddEditProductState extends State<AddEditProduct> {
             children: [
               TextFormField(
                 decoration: InputDecoration(labelText: "Book Title"),
-                initialValue: widget.Add ? null : widget.product!.name,
-                onSaved: (newValue) => bookName = newValue!,
+                initialValue: widget.Add ? null : widget.product.name,
+                onSaved: (newValue) => bookName = newValue,
               ),
               TextFormField(
                 decoration: InputDecoration(labelText: "Book Description"),
-                initialValue: widget.Add ? null : widget.product!.description,
-                onSaved: (newValue) => bookDescription = newValue!,
+                initialValue: widget.Add ? null : widget.product.description,
+                onSaved: (newValue) => bookDescription = newValue,
               ),
               TextFormField(
                 decoration: InputDecoration(labelText: "Book Price"),
                 initialValue:
-                    widget.Add ? null : widget.product!.price.toString(),
-                onSaved: (newValue) => bookPrice = int.tryParse(newValue!)!,
+                    widget.Add ? null : widget.product.price.toString(),
+                onSaved: (newValue) => bookPrice = double.tryParse(newValue),
               ),
             ],
           ),
