@@ -39,4 +39,9 @@ class Product {
   String toString() {
     return 'Product(id: $id, name: $name, description: $description, price: $price, imageUrl: $imageUrl)';
   }
+
+  @override
+  String toString() {
+    return 'Product(id: $id, name: $name, description: $description, price: $price, imageUrl: $imageUrl)';
+  }
 }
