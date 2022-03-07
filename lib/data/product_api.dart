@@ -73,15 +73,4 @@ class ProductApi {
       rethrow;
     }
   }
-
-  Future<bool> deleteProductById(id) async {
-    try {
-      final Response response = await _dio.delete("$_baseUrl/products/$id");
-      final resutls = response.data;
-      return response.statusCode == 200;
-    } catch (e) {
-      print(e);
-      rethrow;
-    }
-  }
 }
