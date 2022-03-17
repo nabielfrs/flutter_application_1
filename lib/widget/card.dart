@@ -71,8 +71,8 @@ class ProductCard extends StatelessWidget {
                         FlatButton(
                           onPressed: () async {
                             try {
-                              final bool deleted = await ProductApi()
-                                  .deleteProductById(product.id);
+                              final bool deleted = (await ProductApi()
+                                  .deleteProductById(product.id)) as bool;
                               if (deleted) {
                                 onDeletedProduct();
                                 Navigator.pop(context);

@@ -3,7 +3,9 @@ import 'package:flutter_application_1/data/product_api.dart';
 import 'package:flutter_application_1/data/product.dart';
 import 'package:flutter_application_1/screen/add.dart';
 import 'package:flutter_application_1/screen/detail.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../cubit/product_cubit.dart';
 import '../widget/card.dart';
 
 class Home extends StatefulWidget {
@@ -19,11 +21,14 @@ class _Home extends State<Home> {
   Future<List<Product>> _products;
   List<Product> _productsList;
   final ScrollController _scrollController = ScrollController();
+  final scaffoldState = GlobalKey<ScaffoldState>();
+  ProductCubit productCubit;
 
   @override
   void initState() {
     super.initState();
-    _products = ProductApi().getProducts();
+    productCubit = ProductCubit(ProductApi());
+    productCubit.getProducts();
     _productsList = List<Product>();
   }
 
@@ -33,61 +38,85 @@ class _Home extends State<Home> {
       appBar: AppBar(
         title: Text("CRUD"),
       ),
-      body: RefreshIndicator(
-        onRefresh: () async {
-          setState(() {
-            _products = ProductApi().getProducts();
-          });
-        },
-        child: FutureBuilder(
-          future: _products,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              if (_productsList.isEmpty) {
-                //add data for first time
-                _productsList =
-                    (snapshot.data as List<Product>).toList(growable: true);
-              }
-              return ListView.builder(
-                controller: _scrollController,
-                itemCount: _productsList.length,
-                itemBuilder: (context, index) => ProductCard(
-                  product: _productsList[index],
-                  onTapProduct: (product) {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => Detail(
-                            product: product,
-                          ),
-                        ));
-                  },
-                  onEditProduct: (product) async {
-                    final Product product = await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => AddEditProduct(
-                            Add: false,
-                            product: _productsList[index],
-                          ),
-                        ));
-                    setState(() {
-                      _productsList[index] = product;
-                    });
-                  },
-                  onDeletedProduct: () {
-                    setState(() {
-                      _productsList.removeAt(index);
-                    });
-                  },
+      body: BlocProvider<ProductCubit>(
+        create: (context) => productCubit,
+        child: BlocListener<ProductCubit, ProductState>(
+          listener: (context, state) {
+            // TODO: implement listener
+            if (state is FailureLoadAllProduct) {
+              scaffoldState.currentState.showSnackBar(
+                SnackBar(
+                  content: Text(state.errorMessage),
                 ),
               );
-            } else {
-              return const Center(
-                child: CircularProgressIndicator(),
+            } else if (state is FailureDeleteProduct) {
+              scaffoldState.currentState.showSnackBar(
+                SnackBar(
+                  content: Text(state.errorMessage),
+                ),
               );
+            } else if (state is SuccessLoadAllProduct) {
+              if (state.message != null && state.message.isNotEmpty)
+                scaffoldState.currentState.showSnackBar(
+                  SnackBar(
+                    content: Text(state.message),
+                  ),
+                );
             }
           },
+          child: BlocBuilder<ProductCubit, ProductState>(
+            builder: ((context, state) {
+              if (state is LoadingProduct) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else if (state is FailureLoadAllProduct) {
+                return Center(
+                  child: Text(state.errorMessage),
+                );
+              } else if (state is SuccessLoadAllProduct) {
+                // var _productsList = state._productsList;
+                return ListView.builder(
+                  controller: _scrollController,
+                  itemCount: _productsList.length,
+                  itemBuilder: (context, index) => ProductCard(
+                    product: _productsList[index],
+                    onTapProduct: (product) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Detail(
+                              product: product,
+                            ),
+                          ));
+                    },
+                    onEditProduct: (product) async {
+                      final Product product = await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AddEditProduct(
+                              Add: false,
+                              product: _productsList[index],
+                            ),
+                          ));
+                      setState(() {
+                        _productsList[index] = product;
+                      });
+                    },
+                    onDeletedProduct: () {
+                      setState(() {
+                        _productsList.removeAt(index);
+                      });
+                    },
+                  ),
+                );
+              } else {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            }),
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
