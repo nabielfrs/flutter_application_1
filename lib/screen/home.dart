@@ -6,6 +6,8 @@ import 'package:flutter_application_1/screen/detail.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../cubit/product_cubit.dart';
+
+import '../cubit/product_state.dart';
 import '../widget/card.dart';
 
 class Home extends StatefulWidget {
@@ -18,8 +20,8 @@ class Home extends StatefulWidget {
 }
 
 class _Home extends State<Home> {
-  Future<List<Product>> _products;
-  List<Product> _productsList;
+  // Future<List<Product>> _products;
+  // List<Product> _productsList;
   final ScrollController _scrollController = ScrollController();
   final scaffoldState = GlobalKey<ScaffoldState>();
   ProductCubit productCubit;
@@ -29,7 +31,6 @@ class _Home extends State<Home> {
     super.initState();
     productCubit = ProductCubit(ProductApi());
     productCubit.getProducts();
-    _productsList = List<Product>();
   }
 
   @override
@@ -75,7 +76,7 @@ class _Home extends State<Home> {
                   child: Text(state.errorMessage),
                 );
               } else if (state is SuccessLoadAllProduct) {
-                // var _productsList = state._productsList;
+                var _productsList = state.listproduct;
                 return ListView.builder(
                   controller: _scrollController,
                   itemCount: _productsList.length,
@@ -128,7 +129,7 @@ class _Home extends State<Home> {
               ));
           if (product != null) {
             setState(() {
-              _productsList.add(product);
+              productCubit.getProducts();
             });
           }
         },

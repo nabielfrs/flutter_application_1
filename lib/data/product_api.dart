@@ -39,7 +39,7 @@ class ProductApi {
         ),
       );
       final results = response.data;
-      return Right(true);
+      return const Right(true);
     } on DioError catch (error) {
       return Left('$error');
     }
@@ -55,7 +55,8 @@ class ProductApi {
         ),
       );
       final results = response.data;
-      return Right(true);
+
+      return const Right(true);
     } on DioError catch (error) {
       return Left('$error');
     }
@@ -65,7 +66,7 @@ class ProductApi {
     try {
       final Response response = await _dio.delete("$_baseUrl/products/$id");
       final resutls = response.data;
-      return Right(true);
+      return const Right(true);
     } on DioError catch (error) {
       return Left('$error');
     }

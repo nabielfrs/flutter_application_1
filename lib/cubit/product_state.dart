@@ -1,6 +1,5 @@
-part of 'product_cubit.dart';
+import 'package:flutter_application_1/data/product.dart';
 
-@immutable
 abstract class ProductState {}
 
 class ProductInitial extends ProductState {}
@@ -19,14 +18,14 @@ class FailureLoadAllProduct extends ProductState {
 }
 
 class SuccessLoadAllProduct extends ProductState {
-  final List<Product> product;
+  final List<Product> listproduct;
   final String message;
 
-  SuccessLoadAllProduct(this.product, {this.message});
+  SuccessLoadAllProduct(this.listproduct, {this.message});
 
   @override
   String toString() {
-    return 'SuccessLoadAllProduct{product: $product, message: $message}';
+    return 'SuccessLoadAllProduct{product: $listproduct, message: $message}';
   }
 }
 

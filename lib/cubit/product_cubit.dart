@@ -5,7 +5,7 @@ import 'package:flutter_application_1/data/product.dart';
 import 'package:flutter_application_1/data/product_api.dart';
 import 'package:meta/meta.dart';
 
-part 'product_state.dart';
+import 'product_state.dart';
 
 class ProductCubit extends Cubit<ProductState> {
   final ProductApi productApi;
@@ -17,7 +17,7 @@ class ProductCubit extends Cubit<ProductState> {
     var result = await productApi.getProducts();
     result.fold(
       (errorMessage) => emit(FailureLoadAllProduct(errorMessage)),
-      (product) => emit(SuccessLoadAllProduct(product)),
+      (listproduct) => emit(SuccessLoadAllProduct(listproduct)),
     );
   }
 
