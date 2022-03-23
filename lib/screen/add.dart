@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/cubit/product_cubit.dart';
 import 'package:flutter_application_1/data/product_api.dart';
 import 'package:flutter_application_1/data/product.dart';
 
@@ -20,9 +21,11 @@ class AddEditProduct extends StatefulWidget {
 
 class _AddEditProductState extends State<AddEditProduct> {
   final formKey = GlobalKey<FormState>();
+  final productCubit = ProductCubit(ProductApi());
 
   String bookName;
   String bookDescription;
+  String imageUrl;
   double bookPrice;
 
   @override
@@ -48,7 +51,7 @@ class _AddEditProductState extends State<AddEditProduct> {
                     "name": bookName,
                     "description": bookDescription,
                     "price": bookPrice,
-                    "image": "Link/$bookName",
+                    "img": "Link/$bookName",
                   }).then((value) {
                     formKey.currentState.reset();
                     Navigator.pop(context, value);
@@ -56,7 +59,9 @@ class _AddEditProductState extends State<AddEditProduct> {
                 } else {
                   ProductApi().putProductById(widget.product.id, {
                     "name": bookName,
+                    "description": bookDescription,
                     "price": bookPrice,
+                    "img": imageUrl,
                   }).then((value) {
                     formKey.currentState?.reset();
                     Navigator.pop(context, value);
@@ -74,17 +79,18 @@ class _AddEditProductState extends State<AddEditProduct> {
           child: Column(
             children: [
               TextFormField(
-                decoration: InputDecoration(labelText: "Book Title"),
+                decoration: const InputDecoration(labelText: "Book Title"),
                 initialValue: widget.Add ? null : widget.product.name,
                 onSaved: (newValue) => bookName = newValue,
               ),
               TextFormField(
-                decoration: InputDecoration(labelText: "Book Description"),
+                decoration:
+                    const InputDecoration(labelText: "Book Description"),
                 initialValue: widget.Add ? null : widget.product.description,
                 onSaved: (newValue) => bookDescription = newValue,
               ),
               TextFormField(
-                decoration: InputDecoration(labelText: "Book Price"),
+                decoration: const InputDecoration(labelText: "Book Price"),
                 initialValue:
                     widget.Add ? null : widget.product.price.toString(),
                 onSaved: (newValue) => bookPrice = double.tryParse(newValue),
