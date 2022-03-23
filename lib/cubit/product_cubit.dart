@@ -1,9 +1,6 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
-import 'package:flutter_application_1/data/product.dart';
+
 import 'package:flutter_application_1/data/product_api.dart';
-import 'package:meta/meta.dart';
 
 import 'product_state.dart';
 
