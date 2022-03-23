@@ -40,13 +40,6 @@ class ProductCard extends StatelessWidget {
                 style: TextStyle(color: Colors.black.withOpacity(0.6)),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text(
-                '',
-                style: TextStyle(color: Colors.black.withOpacity(0.6)),
-              ),
-            ),
             ButtonBar(
               alignment: MainAxisAlignment.start,
               children: [
